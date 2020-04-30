@@ -1,0 +1,3 @@
+[submodule "forum-web-cod3r"]
+	path = forum-web-cod3r
+	url = https://github.com/adercijr/forum-web-cod3r.git
