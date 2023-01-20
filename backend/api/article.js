@@ -9,11 +9,11 @@ module.exports = app => {
 
         // testar formulario
         try {
-            existsOrError(article.name, 'Nome do artigo não informado')
-            existsOrError(article.description, 'Descrição do artigo não informada')
-            existsOrError(article.categoryId, 'Categoria do artigo não informada')
-            existsOrError(article.userId, 'Autor do artigo não informado')
-            existsOrError(article.content, 'Conteúdo do artigo não informado')
+            existsOrError(article.name, 'Article name not informed')
+            existsOrError(article.description, 'Item description not provided')
+            existsOrError(article.categoryId, 'Article category not informed')
+            existsOrError(article.userId, 'Article author unknown')
+            existsOrError(article.content, 'Undisclosed article content')
         } catch(msg) {
             res.status(400).send(msg)
         }
@@ -40,7 +40,7 @@ module.exports = app => {
             .del()
 
             try {
-               existsOrError(rowsDeleted, 'Artigo não foi encontrado')
+               existsOrError(rowsDeleted, 'Article not found')
             }catch(msg) {
                 return res.status(400).send(msg)
             }

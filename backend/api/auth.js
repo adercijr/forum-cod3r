@@ -8,18 +8,18 @@ module.exports = app => {
     // não preenche os campos email ou senha
     const signin = async (req, res) => {
         if (!req.body.email || !req.body.password) {
-            return res.status(400).send('Informe usuário e senha!')
+            return res.status(400).send('Enter username and password!')
         }
         // consulta no bd pelo email informado se o usuario existe
         const user = await app.db('users')
             .where({ email: req.body.email })
             .whereNull('deletedAt')
             .first()
-        if (!user) return res.status(400).send('Usuário não encontrado!')
+        if (!user) return res.status(400).send('User not found!')
 
         // comparar senha informada com a do bd
         const isMatch = bcrypt.compareSync(req.body.password, user.password)
-        if (!isMatch) return res.status(401).send('Email/Senha inválidos!')
+        if (!isMatch) return res.status(401).send('Invalid Email/Password!')
 
         // setar tempo do token para funcionar
         // date.now = milisegundos desde 1970 ate o momento

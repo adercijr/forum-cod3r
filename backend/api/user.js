@@ -25,18 +25,18 @@ module.exports = app => {
 
         // --------- serie de erros ao cadastrar -------------
         try {
-            existsOrError(user.name, 'Nome não informado')
-            existsOrError(user.email, 'E-mail não informado')
-            existsOrError(user.password, 'Senha não informada')
-            existsOrError(user.confirmPassword, 'Confirmação de Senha inválida')
-            equalsOrError(user.password, user.confirmPassword, 'Senhas não conferem')
+            existsOrError(user.name, 'Name uninformed')
+            existsOrError(user.email, 'E-mail uninformed')
+            existsOrError(user.password, 'Password uninformed')
+            existsOrError(user.confirmPassword, 'Invalid password confirmation')
+            equalsOrError(user.password, user.confirmPassword, 'Passwords do not match')
 
             //compara o email informado com o do servidor (não salva no banco ainda, so da erro se o tiver!)
             const userFromDB = await app.db('users')
                 .where({ email: user.email }) // campo email do BD = user.email ??
                 .first() // para pegar o elemento objeto e não o objeto dentro de um array - nao faz sentido ja q é apenas 1
             if(!user.id) { //se não tem id é porque está cadastrando um novo ususario
-                notExistsOrError(userFromDB, 'Usuário já cadastrado')
+                notExistsOrError(userFromDB, 'User alredy registered!')
             }
         } catch (msg) {
             return res.status(400).send(msg)
@@ -79,15 +79,15 @@ module.exports = app => {
         try {
             
             if(user.password) {
-                existsOrError(user.confirmPassword, 'Confirmação de Senha inválida')
-                equalsOrError(user.password, user.confirmPassword, 'Senhas não conferem')
+                existsOrError(user.confirmPassword, 'Invalid Password Confirmation')
+                equalsOrError(user.password, user.confirmPassword, 'passwords do not match')
             }
             //compara o email informado com o do servidor (não salva no banco ainda, so da erro se o tiver!)
             const userFromDB = await app.db('users')
                 .where({ email: user.email }) // campo email do BD = user.email ??
                 .first() // para pegar o elemento objeto e não o objeto dentro de um array - nao faz sentido ja q é apenas 1
             if(!user.id) { //se não tem id é porque está cadastrando um novo ususario
-                notExistsOrError(userFromDB, 'Usuário já cadastrado')
+                notExistsOrError(userFromDB, 'User alredy registered')
             }
         } catch (msg) {
             return res.status(400).send(msg)
@@ -143,13 +143,13 @@ module.exports = app => {
         try {
             const articles = await app.db('articles')
                 .where({ userId: req.params.id })
-            notExistsOrError(articles, 'Usuário possui artigos')
+            notExistsOrError(articles, 'User has articles')
 
             // colocando data o usuario passa a ter status de deletado
             const rowsUpdated = await app.db('users')
                 .update({ deletedAt: new Date() })
                 .where({ id: req.params.id })
-            existsOrError(rowsUpdated, 'Usuário não foi encontrado')
+            existsOrError(rowsUpdated, 'User not found')
 
             res.status(204).send()
         } catch(msg) {
