@@ -6,7 +6,7 @@
                 <b-col md="6" sm="12">
                     <b-form-group label="Nome: " label-for="user-name">
                         <b-form-input id="user-name" type="text" v-model="user.name" 
-                            required placeholder="Informe o nome do usuário" 
+                            required placeholder="Enter the username" 
                             :readonly="mode === 'remove'" >
                         </b-form-input>
                     </b-form-group>                    
@@ -14,7 +14,7 @@
                 <b-col md="6" sm="12">
                     <b-form-group label="Email: " label-for="user-email">
                         <b-form-input id="user-email" type="text" v-model="user.email"
-                            required placeholder="Informe o email do usuário"
+                            required placeholder="Enter the user's email"
                             :readonly="mode === 'remove'" >
                         </b-form-input>
                     </b-form-group>                    
@@ -30,14 +30,14 @@
                 <b-col md="6" sm="12">
                     <b-form-group label="Senha: " label-for="user-password">
                         <b-form-input id="user-password" type="password" v-model="user.password"
-                            required placeholder="Informe a senha do usuário" >
+                            required placeholder="Enter the user's password" >
                         </b-form-input>
                     </b-form-group>                    
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="Confirmação de senha: " label-for="user-confirmPassword">
                         <b-form-input id="user-confirmPassword" type="password" v-model="user.confirmPassword"
-                            required placeholder="Confirme a senha do usuário" >
+                            required placeholder="Confirm user password" >
                         </b-form-input>
                     </b-form-group>                    
                 </b-col>
@@ -80,96 +80,100 @@
 </template>
 
 <script>
-import { baseApiUrl, showError } from '@/global'
-import axios from 'axios'
-    
-export default {
-    name: 'UserAdmin',
-    data: function() {
-        return {
-            mode: 'save',
-            state: '',
-            user: {},
-            users: [],
-            page: 1,
-            count: 0,
-            limit: 0,
-            fields: [
-                { key: 'id', label: 'Código', sortable: true },
-                { key: 'name', label: 'Nome', sortable: true },
-                { key: 'email', label: 'E-mail', sortable: true },
-                { key: 'admin', label: 'Administrador', sortable: true, 
-                    formatter: value => value ? 'Sim' : 'Não' },
-                { key: 'actions', label: 'Ações' }
-            ]
-        }
-    },
-    methods: {
-        loadUsers() {
-            const url = `${baseApiUrl}/users?page=${this.page}`
-            axios.get(url).then(res => {
+import { baseApiUrl, showError } from "@/global"
+import axios from "axios"
 
-                this.users = res.data.data
-                this.count = res.data.count
-                this.limit = res.data.limit  
-                })            
+export default {
+  name: "UserAdmin",
+  data: function() {
+    return {
+      mode: "save",
+      state: "",
+      user: {},
+      users: [],
+      page: 1,
+      count: 0,
+      limit: 0,
+      fields: [
+        { key: "id", label: "Code", sortable: true },
+        { key: "name", label: "Name", sortable: true },
+        { key: "email", label: "E-mail", sortable: true },
+        {
+          key: "admin",
+          label: "Administrador",
+          sortable: true,
+          formatter: (value) => (value ? "Sim" : "Não"),
         },
-        reset() {
-            this.mode = 'save'
-            this.user = {}
-            this.state= ''
-            this.loadUsers()
-        },
-        save() { // inserir ou alterar
-            const method = this.user.id ? 'put' : 'post'
-            const id = this.user.id ? `/${this.user.id}` : ''
-            axios[method](`${baseApiUrl}/users${id}`, this.user)
-                .then(() => {
-                    this.$toasted.global.defaultSuccess()
-                    this.reset()
-                })
-                .catch(showError)
-        },
-        remove() {
-            const id = this.user.id
-            axios.delete(`${baseApiUrl}/users/${id}`)
-                .then(() => {
-                    this.$toasted.global.defaultSuccess()
-                    this.reset()
-                })
-                .catch(showError)
-        },
-        loadUser(user, mode = 'save') {
-            this.mode = mode
-            this.user = { ...user }
-            if(this.mode === 'save') {
-                this.state = 'excluir'
-            } else {
-                this.state = 'editar'
-            }
-        },
-        scrollTop() { // mover pra cima - com jQuery
-                 $('html, body').animate({ scrollTop: 200 }, 50); 
-                  
-        },
-        confirmRemove() {     
-            let r = confirm("Tem certeza que deseja excluir usuário?");
-            if (r == true) {
-                this.remove()
-            }       
-        }        
-    },
-    watch: {
-        page() {
-            this.loadUsers()
-        }
-    },        
-    mounted() {
-        this.loadUsers()
+        { key: "actions", label: "Ações" },
+      ],
     }
+  },
+  methods: {
+    loadUsers() {
+      const url = `${baseApiUrl}/users?page=${this.page}`
+      axios.get(url).then((res) => {
+        this.users = res.data.data
+        this.count = res.data.count
+        this.limit = res.data.limit
+      })
+    },
+    reset() {
+      this.mode = "save"
+      this.user = {}
+      this.state = ""
+      this.loadUsers()
+    },
+    save() {
+      // inserir ou alterar
+      const method = this.user.id ? "put" : "post"
+      const id = this.user.id ? `/${this.user.id}` : ""
+      axios[method](`${baseApiUrl}/users${id}`, this.user)
+        .then(() => {
+          this.$toasted.global.defaultSuccess()
+          this.reset()
+        })
+        .catch(showError)
+    },
+    remove() {
+      const id = this.user.id
+      axios
+        .delete(`${baseApiUrl}/users/${id}`)
+        .then(() => {
+          this.$toasted.global.defaultSuccess()
+          this.reset()
+        })
+        .catch(showError)
+    },
+    loadUser(user, mode = "save") {
+      this.mode = mode
+      this.user = { ...user }
+      if (this.mode === "save") {
+        this.state = "excluir"
+      } else {
+        this.state = "editar"
+      }
+    },
+    scrollTop() {
+      // mover pra cima - com jQuery
+      $("html, body").animate({ scrollTop: 200 }, 50)
+    },
+    confirmRemove() {
+      let r = confirm("Tem certeza que deseja excluir usuário?")
+      if (r == true) {
+        this.remove()
+      }
+    },
+  },
+  watch: {
+    page() {
+      this.loadUsers()
+    },
+  },
+  mounted() {
+    this.loadUsers()
+  },
 }
 </script>
     
 <style>
-
 </style>

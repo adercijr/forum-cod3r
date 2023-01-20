@@ -1,17 +1,17 @@
 <template>
     <div class="admin-pages">
-        <PageTitle icon="fa fa-cogs" main=" Administração do Sistema"
-            sub="Cadastros & Cia" />
+        <PageTitle icon="fa fa-cogs" main=" System Administration"
+            sub="Registration & Co." />
         <div class="admin-pages-tabs">
             <b-card no-body>
                 <b-tabs card>
-                    <b-tab title="Artigos" active>
+                    <b-tab title="Articles" active>
                         <ArticleAdmin />
                     </b-tab>
-                    <b-tab title="Categorias">
+                    <b-tab title="Categories">
                         <CategoryAdmin />
                     </b-tab>
-                    <b-tab title="Usuarios">
+                    <b-tab title="Users">
                         <UserAdmin />
                     </b-tab>
                 </b-tabs>
@@ -21,17 +21,16 @@
 </template>
 
 <script>
-import PageTitle from '../template/PageTitle'
-import ArticleAdmin from './ArticleAdmin'
-import CategoryAdmin from './CategoryAdmin'
-import UserAdmin from './UserAdmin'
+import PageTitle from "../template/PageTitle"
+import ArticleAdmin from "./ArticleAdmin"
+import CategoryAdmin from "./CategoryAdmin"
+import UserAdmin from "./UserAdmin"
 
 export default {
-    name: 'AdminPages',
-    components: { PageTitle, ArticleAdmin, CategoryAdmin, UserAdmin }
+  name: "AdminPages",
+  components: { PageTitle, ArticleAdmin, CategoryAdmin, UserAdmin },
 }
 </script>
 
 <style>
-
 </style>
